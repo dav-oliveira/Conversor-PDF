@@ -15,7 +15,7 @@ function handleFile(e) {
 
 async function gerarRecibos() {
     if (!window.excelData) {
-        alert("Por favor, carregue um arquivo Excel primeiro.");
+        alert("Por favor, carregue um arquivo .xlsx primeiro.");
         return;
     }
 
