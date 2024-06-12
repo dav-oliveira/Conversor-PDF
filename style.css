@@ -1,64 +1,81 @@
-/* style.css */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f9;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-}
+ /* style.css */
+ body {
+     font-family: 'Arial', sans-serif;
+     background-color: #f4f4f9;
+     margin: 0;
+     padding: 0;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     height: 100vh;
+ }
 
-h1 {
-    color: #333;
-    margin-bottom: 20px;
-    font-size: 2rem;
-    text-align: center;
-}
+ h1 {
+     color: #333;
+     margin-bottom: 20px;
+     font-size: 2rem;
+     text-align: center;
+ }
 
-p {
-    font-style: italic;
-    color: #ff0000;
-}
+ p {
+     font-style: italic;
+     color: #ff0000;
+ }
 
-input[type="file"] {
-    display: block;
-    margin-bottom: 20px;
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    transition: border-color 0.3s;
-}
+ input[type="file"] {
+     display: block;
+     margin-bottom: 20px;
+     padding: 10px;
+     font-size: 1rem;
+     border: 1px solid #ddd;
+     border-radius: 5px;
+     transition: border-color 0.3s;
+ }
 
-input[type="file"]:hover {
-    border-color: #999;
-}
+ input[type="file"]:hover {
+     border-color: #999;
+ }
 
-button {
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
+ button {
+     background-color: #007BFF;
+     color: white;
+     border: none;
+     border-radius: 5px;
+     padding: 10px 20px;
+     font-size: 1rem;
+     cursor: pointer;
+     transition: background-color 0.3s;
+ }
 
-button:hover {
-    background-color: #0056b3;
-}
+ button:hover {
+     background-color: #0056b3;
+ }
 
-@media (max-width: 600px) {
-    h1 {
-        font-size: 1.5rem;
-    }
+ .spinner {
+     display: none;
+     margin-top: 20px;
+     width: 50px;
+     height: 50px;
+     border: 5px solid rgba(0, 0, 0, 0.1);
+     border-top-color: #000;
+     border-radius: 50%;
+     animation: spin 1s linear infinite;
+ }
 
-    button {
-        padding: 10px;
-        font-size: 0.9rem;
-    }
-}
+ @keyframes spin {
+     to {
+         transform: rotate(360deg);
+     }
+ }
+
+ @media (max-width: 600px) {
+     h1 {
+         font-size: 1.5rem;
+     }
+
+     button {
+         padding: 10px;
+         font-size: 0.9rem;
+     }
+ }

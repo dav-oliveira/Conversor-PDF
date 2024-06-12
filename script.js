@@ -1,8 +1,12 @@
+let fileName = '';
+
 document.getElementById('fileInput').addEventListener('change', handleFile, false);
 
 // Função para lidar com o arquivo selecionado
 function handleFile(e) {
     const files = e.target.files, f = files[0];
+    fileName = f.name; // Armazena o nome do arquivo na variável fileName
+
     const reader = new FileReader();
     reader.onload = function (e) {
         const data = new Uint8Array(e.target.result);
@@ -14,12 +18,24 @@ function handleFile(e) {
     reader.readAsArrayBuffer(f);
 }
 
+// Função para mostrar o spinner
+function showSpinner() {
+    document.getElementById('spinner').style.display = 'block';
+}
+
+// Função para esconder o spinner
+function hideSpinner() {
+    document.getElementById('spinner').style.display = 'none';
+}
+
 // Função para gerar os recibos em PDF
 async function gerarRecibos() {
     if (!window.excelData) {
         alert("Por favor, carregue um arquivo .xlsx primeiro.");
         return;
     }
+
+    showSpinner();
 
     const { jsPDF } = window.jspdf;
     const zip = new JSZip();
@@ -94,7 +110,6 @@ async function gerarRecibos() {
         doc.text(`- Qtd. de Corridas: ${qtdCorridasFormatado}`, 20, 105);
         doc.text(`- Faturamento Bruto: ${faturamentoFormatado}`, 20, 115);
         doc.text(`- Taxa do Mês: ${taxaFormatada}`, 20, 125);
-
         doc.text('Obrigado por utilizar nossos serviços e bons ganhos !!!', 20, 145);
 
         // Linha separadora
@@ -120,14 +135,17 @@ async function gerarRecibos() {
         console.log(`Recibo gerado para: ${nome}, CPF: ${cpf}`);
     }
 
-    // Gera o arquivo ZIP com todos os recibos
-    zip.generateAsync({ type: 'blob' }).then(function (content) {
-        const element = document.createElement('a');
-        element.href = URL.createObjectURL(content);
-        element.download = 'recibos.zip';
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
-        console.log("Arquivo ZIP criado e baixado.");
-    });
+    // Gera o arquivo ZIP com todos os PDFs
+    const zipBlob = await zip.generateAsync({ type: 'blob' });
+    const zipUrl = URL.createObjectURL(zipBlob);
+    const a = document.createElement('a');
+    a.href = zipUrl;
+    a.download = `${fileName.split('.').slice(0, -1).join('.')}.zip`;
+    document.body.appendChild(a);
+    a.click();
+
+    // Limpa o campo de seleção de arquivo
+    document.getElementById('fileInput').value = '';
+    hideSpinner();
+    alert("Download concluído!");
 }
