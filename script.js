@@ -48,8 +48,8 @@ async function gerarRecibos() {
     for (const [index, row] of rows.entries()) {
         const [data, cpf, nome, qtdCorridas, faturamento, taxa, valorPago, nf] = row;
 
-        if (!cpf || !nome || !qtdCorridas || !faturamento || !taxa || !valorPago || !nf) {
-            console.warn(`Linha ${index + 2} está faltando dados. Pulando...`);
+        if (!cpf) {
+            console.warn(`Linha ${index + 2} está sem CPF. Pulando...`);
             continue;
         }
 
@@ -61,10 +61,10 @@ async function gerarRecibos() {
         const dataPlanilha = `${diaPlanilha}/${mesPlanilha}/${anoPlanilha}`;
 
         // Formatando os valores
-        const qtdCorridasFormatado = parseInt(qtdCorridas, 10);
-        const faturamentoFormatado = parseFloat(faturamento).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        const taxaFormatada = parseFloat(taxa).toLocaleString('pt-BR', { style: 'percent', minimumFractionDigits: 2 });
-        const valorPagoFormatado = parseFloat(valorPago).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        const qtdCorridasFormatado = qtdCorridas ? parseInt(qtdCorridas, 10) : 'N/A';
+        const faturamentoFormatado = faturamento ? parseFloat(faturamento).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : 'N/A';
+        const taxaFormatada = taxa ? parseFloat(taxa).toLocaleString('pt-BR', { style: 'percent', minimumFractionDigits: 2 }) : 'N/A';
+        const valorPagoFormatado = valorPago ? parseFloat(valorPago).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : 'N/A';
 
         const doc = new jsPDF();
 
@@ -79,7 +79,7 @@ async function gerarRecibos() {
         doc.setFont("helvetica", "normal");
         doc.setFontSize(12);
         doc.text(`Bragança Paulista, ${dataPlanilha}`, 20, 50);
-        doc.text(`Nome: ${nome}`, 20, 60);
+        doc.text(`Nome: ${nome || 'N/A'}`, 20, 60);
         doc.text(`CPF: ${cpf}`, 20, 70);
 
         // Linha separadora
@@ -88,7 +88,7 @@ async function gerarRecibos() {
 
         // Informações do mês
         doc.setFont("helvetica", "bold");
-        doc.text(`${nf}`, 20, 95);
+        doc.text(`${nf || 'N/A'}`, 20, 95);
         doc.setFont("helvetica", "normal");
 
         // Contêiner com fundo cinza mais escuro para destacar o texto de taxa e valor
@@ -100,7 +100,7 @@ async function gerarRecibos() {
         doc.setFont("helvetica", "bold"); // Texto em negrito
         doc.text('Valor de taxa Paga no mês:', 162, 35, null, null, 'center');
 
-        doc.setFont("hevelica", "bold");
+        doc.setFont("helvetica", "bold");
         doc.setFontSize(18);
         doc.text(valorPagoFormatado, 162, 45, null, null, 'center');
 
